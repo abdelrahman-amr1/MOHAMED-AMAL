@@ -2,260 +2,513 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حفل خطوبة محمد وبسنت</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>دعوة زفاف محمد & امال | 18 نوفمبر</title>
     
-    <!-- Meta Tags for Search Engine, Social Sharing, and WhatsApp Previews -->
-    <meta name="title" content="حفل خطوبة محمد وبسنت">
-    <meta name="description" content="حفل خطوبة محمد وبسنت - يسعدنا دعوتكم لمشاركتنا أجمل لحظات العمر يوم الجمعة ٢٣ أكتوبر ٢٠٢٦ بدار الإشارة بمدينة نصر.">
+    <!-- Meta Tags for Social Sharing & WhatsApp Previews -->
+    <meta name="title" content="دعوة زفاف محمد & امال">
+    <meta name="description" content="بفضل من الله ورعايته يسرنا دعوتكم لمشاركتنا فرحتنا في عقد قراننا وزفافنا يوم الأربعاء 18 نوفمبر بقاعات لامور (قاعة رويال) - محمد & امال">
     
-    <!-- Open Graph / WhatsApp / Facebook / Telegram -->
+    <!-- Open Graph / WhatsApp / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://abdelrahman-amr1.github.io/mohamed-bassant/">
-    <meta property="og:site_name" content="حفل خطوبة محمد وبسنت">
-    <meta property="og:title" content="حفل خطوبة محمد وبسنت">
-    <meta property="og:description" content="حفل خطوبة محمد وبسنت - يسعدنا دعوتكم لمشاركتنا أجمل لحظات العمر يوم الجمعة ٢٣ أكتوبر ٢٠٢٦ بدار الإشارة بمدينة نصر. حضوركم يكتمل به فرحتنا.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop">
-    <meta property="og:image:secure_url" content="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:url" content="https://abdelrahman-amr1.github.io/MOHAMED-AMAL/">
+    <meta property="og:title" content="دعوة زفاف محمد & امال">
+    <meta property="og:description" content="بفضل من الله ورعايته يسرنا دعوتكم لمشاركتنا فرحتنا في عقد قراننا وزفافنا يوم الأربعاء 18 نوفمبر بقاعات لامور (قاعة رويال) - حضوركم يسعدنا">
+    <meta property="og:image" content="محمد و امال.jpeg">
     <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://abdelrahman-amr1.github.io/mohamed-bassant/">
-    <meta name="twitter:title" content="حفل خطوبة محمد وبسنت">
-    <meta name="twitter:description" content="حفل خطوبة محمد وبسنت - يسعدنا دعوتكم لمشاركتنا أجمل لحظات العمر يوم الجمعة ٢٣ أكتوبر ٢٠٢٦ بدار الإشارة بمدينة نصر.">
-    <meta name="twitter:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop">
-    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@500;700&family=Alex+Brush&display=swap" rel="stylesheet">
-    
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Ambient background music -->
-    <audio id="bg-music" loop>
+    <!-- Background Music Audio Element -->
+    <audio id="bg-music" loop preload="auto">
         <source src="t.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Welcome / Autoplay Bypass Screen -->
-    <div id="welcome-screen" class="welcome-screen">
-        <div class="welcome-content">
-            <div class="wedding-rings">
-                <i class="fa-solid fa-heart animate-pulse-gold"></i>
+    <!-- Canvas for Floating Flower Petals / Gold Particles -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ======================================================= -->
+    <!-- SCREEN 1: Wax Seal Envelope Opening Screen (غلاف الظرف) -->
+    <!-- ======================================================= -->
+    <div id="envelope-screen" class="envelope-screen">
+        <div class="envelope-ambient-glow"></div>
+        
+        <div class="envelope-wrapper">
+            <!-- Envelope Header Info -->
+            <div class="envelope-header-text">
+                <span class="basmala">بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ</span>
+                <h1 class="invitation-main-title">دَعْوَةُ زَفَاف</h1>
+                <p class="envelope-subtitle">محمد & امال</p>
             </div>
-            <h2>حفل خطوبة</h2>
-            <h1>محمد & بسنت</h1>
-            <p>يسعدنا دعوتكم لمشاركتنا أجمل لحظات العمر...</p>
-            <button id="enter-btn" class="enter-btn">
-                <span>فتح الدعوة</span>
-                <i class="fa-solid fa-envelope-open"></i>
-            </button>
-        </div>
-    </div>
 
-    <!-- Music Control Float -->
-    <button id="music-toggle" class="music-toggle hidden" aria-label="Toggle Music">
-        <i class="fa-solid fa-music"></i>
-        <div class="music-waves">
-            <span></span><span></span><span></span>
-        </div>
-    </button>
-
-    <!-- Main Invitation Webpage -->
-    <main class="invitation-container hidden">
-        
-        <!-- Floating falling leaves/petals container -->
-        <div id="particles-container" class="particles-container"></div>
-        
-        <!-- Invitation Card Section -->
-        <section class="card-section">
-            <div class="card-outer">
-                <!-- Floral and leaf shadow overlay elements -->
-                <div class="leaf-shadow-top-left"></div>
-                <div class="leaf-shadow-bottom-right"></div>
+            <!-- Realistic 3D Envelope Container -->
+            <div class="envelope-3d" id="envelope-box">
+                <!-- Envelope Flap Top -->
+                <div class="envelope-flap top-flap"></div>
+                <!-- Envelope Flap Left & Right -->
+                <div class="envelope-flap left-flap"></div>
+                <div class="envelope-flap right-flap"></div>
+                <div class="envelope-flap bottom-flap"></div>
                 
-                <div class="card-inner">
-                    <!-- Top header text -->
-                    <div class="card-header">
-                        <p class="intro-text">يسعدنا دعوتكم لمشاركتنا<br>أجمل لحظات العمر</p>
-                        <div class="divider-heart">
-                            <span class="line"></span>
-                            <i class="fa-solid fa-heart gold-heart"></i>
-                            <span class="line"></span>
-                        </div>
-                        <p class="event-type">في حفل خطوبة</p>
-                    </div>
-
-                    <!-- Names & Elegant Frame Design -->
-                    <div class="names-frame-container">
-                        <!-- Custom SVG mirroring the image's gold line frame with leaves and heart -->
-                        <svg class="names-frame-svg" viewBox="0 0 400 450" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Incomplete gold frame arch -->
-                            <path d="M 80,180 A 120,150 0 0,1 320,180 A 120,150 0 0,1 210,328" 
-                                  fill="none" stroke="url(#gold-gradient)" stroke-width="1.8" stroke-linecap="round" />
-                            
-                            <path d="M 180,332 A 120,150 0 0,1 80,180" 
-                                  fill="none" stroke="url(#gold-gradient)" stroke-width="1.8" stroke-linecap="round" />
-                            
-                            <!-- Delicate leaves growing on the left side of the frame -->
-                            <g class="svg-leaves" transform="translate(68, 175) rotate(-35)">
-                                <path d="M 0,0 C -10,-10 -25,-15 -35,-5 C -30,10 -15,10 0,0" fill="#a88a5d" opacity="0.85"/>
-                                <path d="M 0,-15 C -8,-25 -20,-28 -28,-20 C -24,-8 -12,-8 0,-15" fill="#a88a5d" opacity="0.85"/>
-                                <path d="M 0,15 C -8,25 -20,28 -28,20 C -24,8 -12,8 0,15" fill="#8e6f43" opacity="0.85"/>
-                                <path d="M 0,-30 C -5,-38 -15,-40 -20,-35 C -18,-27 -10,-27 0,-30" fill="#8e6f43" opacity="0.85"/>
-                                <!-- Small Stem -->
-                                <path d="M 5,25 L -5,-40" stroke="#8e6f43" stroke-width="1" fill="none"/>
-                            </g>
-
-                            <!-- Little heart outline at the bottom left -->
-                            <path class="svg-heart-bottom" d="M 152,328 C 148,324 144,324 141,328 C 138,332 144,338 152,344 C 160,338 166,332 163,328 C 160,324 156,324 152,328 Z" 
-                                  fill="none" stroke="url(#gold-gradient)" stroke-width="1.2" transform="rotate(-15 152 328)"/>
-
-                            <!-- Gradients Definition -->
-                            <defs>
-                                <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#d4af37" />
-                                    <stop offset="50%" stop-color="#f3e5ab" />
-                                    <stop offset="100%" stop-color="#aa7c11" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                        
-                        <!-- Calligraphy Overlaid Names -->
-                        <div class="names-overlay">
-                            <h1 class="groom-name">محمد</h1>
-                            <span class="ampersand">&</span>
-                            <h1 class="bride-name">بسنت</h1>
-                        </div>
-                    </div>
-
-                    <!-- Invitation details text -->
-                    <div class="card-footer-text">
-                        <div class="divider-text-line">
-                            <span class="small-line"></span>
-                            <span class="footer-middle-text">بحضوركم تكتمل فرحتنا</span>
-                            <span class="small-line"></span>
-                        </div>
-                    </div>
-
-                    <!-- 3-Column Info Section (Location, Date, Time) -->
-                    <div class="details-grid">
-                        <!-- Clock / Time Column -->
-                        <div class="detail-column">
-                            <div class="icon-circle">
-                                <i class="fa-regular fa-clock"></i>
-                            </div>
-                            <h3>الموعد</h3>
-                            <p class="detail-val">الاحتفال السعيد</p>
-                        </div>
-                        
-                        <!-- Calendar / Date Column -->
-                        <div class="detail-column">
-                            <div class="icon-circle">
-                                <i class="fa-regular fa-calendar-days"></i>
-                            </div>
-                            <h3>التاريخ</h3>
-                            <p class="detail-val date-highlight">٢٣ / ١٠</p>
-                            <p class="detail-sub">أكتوبر ٢٠٢٦</p>
-                        </div>
-
-                        <!-- Pin / Location Column -->
-                        <div class="detail-column">
-                            <div class="icon-circle">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </div>
-                            <h3>المكان</h3>
-                            <p class="detail-val">دار الإشارة</p>
-                            <p class="detail-sub">مدينة نصر</p>
-                        </div>
-                    </div>
-
-                    <!-- Lower heart sign-off -->
-                    <div class="signoff-section">
-                        <i class="fa-solid fa-heart gold-heart-mini"></i>
-                        <p class="signoff-text">في انتظاركم لنصنع ذكريات لا تُنسى</p>
-                        <i class="fa-solid fa-heart gold-heart-mini"></i>
-                    </div>
+                <!-- Inner Letter Peeking Out -->
+                <div class="envelope-inner-card">
+                    <div class="mini-card-names">محمد & امال</div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Live Countdown Section -->
-        <section class="countdown-section">
-            <h2 class="section-title">متبقي على الخطوبة</h2>
-            <div id="countdown-timer" class="countdown-timer">
-                <div class="time-block">
-                    <span id="days" class="time-number">00</span>
-                    <span class="time-label">يوم</span>
-                </div>
-                <div class="time-block">
-                    <span id="hours" class="time-number">00</span>
-                    <span class="time-label">ساعة</span>
-                </div>
-                <div class="time-block">
-                    <span id="minutes" class="time-number">00</span>
-                    <span class="time-label">دقيقة</span>
-                </div>
-                <div class="time-block">
-                    <span id="seconds" class="time-number">00</span>
-                    <span class="time-label">ثانية</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Location Map & Directions Section -->
-        <section class="location-section">
-            <h2 class="section-title">موقع القاعة</h2>
-            <p class="location-desc">لتسهيل وصولكم إلى دار الإشارة بمدينة نصر، يمكنكم استخدام الخريطة التفاعلية بالأسفل أو الضغط على الزر لفتح الموقع في تطبيق الخرائط مباشرة.</p>
-            
-            <!-- Map Buttons -->
-            <div class="map-actions">
-                <a href="https://maps.app.goo.gl/ySKm5qSU7QTNDE767" target="_blank" class="map-btn main-map-btn" id="open-maps-btn">
-                    <i class="fa-solid fa-map-location-dot"></i>
-                    <span>فتح في خرائط Google</span>
-                </a>
-                <button class="map-btn secondary-map-btn" id="copy-location-btn">
-                    <i class="fa-regular fa-copy"></i>
-                    <span>نسخ رابط الموقع</span>
+                <!-- 3D Wax Seal Button -->
+                <button id="wax-seal-btn" class="wax-seal-btn" aria-label="افتح الدعوة">
+                    <div class="seal-glow-ring"></div>
+                    <div class="seal-inner">
+                        <i class="fa-solid fa-gem seal-icon"></i>
+                        <span class="seal-stamp-text">اضغطوا على الختم</span>
+                        <div class="seal-border-ring"></div>
+                    </div>
                 </button>
             </div>
 
-            <!-- Styled Map Iframe / Placeholder -->
-            <div class="map-iframe-container">
-                <iframe src="https://maps.google.com/maps?q=30.0807978,31.3480044&z=17&output=embed" 
-                    width="100%" 
-                    height="350" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+            <!-- Prompt Text -->
+            <p class="tap-hint">
+                <i class="fa-regular fa-hand-pointer pulse-icon"></i>
+                انقر على الختم الشمعي لفتح بطاقة الدعوة
+            </p>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- SCREEN 2: Main Invitation Card Page (صفحة الدعوة الكاملة) -->
+    <!-- ======================================================= -->
+    <main id="main-invitation" class="main-invitation hidden">
+
+        <!-- Floating Music Control Button -->
+        <button id="music-toggle" class="music-toggle-btn" aria-label="التحكم في الصوت">
+            <i class="fa-solid fa-compact-disc disc-spinning"></i>
+            <div class="sound-wave-bars">
+                <span></span><span></span><span></span><span></span>
             </div>
-        </section>
+        </button>
 
+        <!-- App Mobile Frame Container -->
+        <div class="mobile-app-container">
 
+            <!-- SECTION 1: Top Hero Banner with Names & Calligraphy -->
+            <section class="section-card hero-card" id="home-section">
+                <!-- Watercolor Floral Frame Background -->
+                <div class="floral-frame-overlay">
+                    <svg class="polygon-svg" viewBox="0 0 500 700" preserveAspectRatio="none">
+                        <polygon points="250,15 480,180 480,520 250,685 20,520 20,180" class="poly-outer" />
+                        <polygon points="250,30 465,190 465,510 250,670 35,510 35,190" class="poly-inner" />
+                    </svg>
+                </div>
 
-        <!-- Footer -->
-        <footer class="main-footer">
-            <p>حفل خطوبة محمد & بسنت</p>
-            <p class="developer-credit">مطور الموقع: <a href="https://abdelrahman-amr1.github.io/AbdelrahmanAmr/" target="_blank" class="dev-link">المهندس عبدالرحمن عمرو</a></p>
-            <p class="copyrights">جميع الحقوق محفوظة © 2026</p>
-        </footer>
+                <div class="hero-content">
+                    <div class="dua-header">
+                        <span class="dua-text">بَارَكَ اللَّهُ لَكُمَا وَبَارَكَ عَلَيْكُمَا وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ</span>
+                    </div>
+
+                    <p class="invite-pre-text">بفضل من الله ورعايته يسرنا دعوتكم لمشاركتنا فرحتنا في عقد قراننا وزفافنا</p>
+
+                    <!-- Couple Names with Calligraphy Style -->
+                    <div class="couple-names-wrap">
+                        <h1 class="groom-name">محمد</h1>
+                        <span class="names-connector">&</span>
+                        <h1 class="bride-name">امال</h1>
+                    </div>
+
+                    <div class="floral-divider">
+                        <span class="divider-line"></span>
+                        <i class="fa-solid fa-leaf gold-leaf"></i>
+                        <span class="divider-line"></span>
+                    </div>
+
+                    <!-- Date & Venue Highlight -->
+                    <div class="hero-event-summary">
+                        <div class="summary-pill">
+                            <i class="fa-regular fa-calendar-check"></i>
+                            <span>الأربعاء ١٨ نوفمبر</span>
+                        </div>
+                        <div class="summary-pill">
+                            <i class="fa-regular fa-clock"></i>
+                            <span>الساعة ٧:٠٠ مساءً</span>
+                        </div>
+                        <div class="summary-pill">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>قاعات لامور (قاعة رويال)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: Welcoming Message & Quranic Ayah -->
+            <section class="section-card quran-card">
+                <div class="card-inner-box">
+                    <div class="quran-symbol">
+                        <i class="fa-solid fa-hands-praying"></i>
+                    </div>
+                    <p class="quran-ayah">
+                        « وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ »
+                    </p>
+                    <div class="heart-separator">
+                        <span class="line"></span>
+                        <i class="fa-solid fa-heart"></i>
+                        <span class="line"></span>
+                    </div>
+                    <p class="welcome-personal-text">
+                        لأنكم من أغلى الناس على قلوبنا، يسعدنا أن تشاركونا أجمل يوم في حياتنا، نتمنى من أعماق قلوبنا أن تشرفونا بحضوركم لتكتمل فرحتنا بوجودكم بيننا. 🤍
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECTION 3: Calendar & Save The Date -->
+            <section class="section-card calendar-card" id="date-section">
+                <h3 class="card-title">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    موعد الحفل
+                </h3>
+
+                <div class="calendar-sheet">
+                    <div class="cal-header">
+                        <span class="cal-day-name">الأربعاء</span>
+                        <span class="cal-month-year">نوفمبر ٢٠٢٦</span>
+                    </div>
+                    <div class="cal-body">
+                        <span class="cal-big-day">18</span>
+                        <span class="cal-time-tag">
+                            <i class="fa-regular fa-clock"></i>
+                            الساعة 07:00 مساءً
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Save to Calendar Button -->
+                <div class="save-date-actions">
+                    <button id="add-to-calendar-btn" class="btn-gold-action">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                        <span>حفظ التاريخ في تقويمك</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 4: Live Countdown Timer -->
+            <section class="section-card countdown-card">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    العد التنازلي للزفاف
+                </h3>
+                <p class="countdown-sub">بانتظار أحلى اللحظات معكم</p>
+
+                <div id="countdown-timer" class="countdown-grid">
+                    <div class="time-box">
+                        <span class="time-num" id="days">00</span>
+                        <span class="time-lbl">أيام</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="time-num" id="hours">00</span>
+                        <span class="time-lbl">ساعات</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="time-num" id="minutes">00</span>
+                        <span class="time-lbl">دقائق</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="time-num" id="seconds">00</span>
+                        <span class="time-lbl">ثواني</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: Program / Timeline (تفاصيل الاحتفال) -->
+            <section class="section-card timeline-card" id="program-section">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-sparkles"></i>
+                    برنامج الحفل
+                </h3>
+                <p class="timeline-sub">تفاصيل أوقات الاحتفال السعيد</p>
+
+                <div class="timeline-container">
+                    <div class="timeline-item">
+                        <div class="timeline-time">07:00 م</div>
+                        <div class="timeline-dot"><i class="fa-solid fa-door-open"></i></div>
+                        <div class="timeline-content">
+                            <h4>استقبال الضيوف الكرام</h4>
+                            <p>أهلاً بكم بكل حب وترحاب</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-time">08:00 م</div>
+                        <div class="timeline-dot"><i class="fa-solid fa-rings-wedding"></i></div>
+                        <div class="timeline-content">
+                            <h4>مراسم عقد القران والزفاف</h4>
+                            <p>بداية أجمل رحلة عمر مباركة</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-time">09:00 م</div>
+                        <div class="timeline-dot"><i class="fa-solid fa-cake-candles"></i></div>
+                        <div class="timeline-content">
+                            <h4>تقطيع كعكة الزفاف</h4>
+                            <p>لحظات البهجة والسعادة معاً</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-time">09:30 م</div>
+                        <div class="timeline-dot"><i class="fa-solid fa-utensils"></i></div>
+                        <div class="timeline-content">
+                            <h4>بوفيه العشاء الفاخر</h4>
+                            <p>نتمنى لكم شهية طيبة وأوقاتاً ممتعة</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-time">10:00 م</div>
+                        <div class="timeline-dot"><i class="fa-solid fa-camera"></i></div>
+                        <div class="timeline-content">
+                            <h4>التقاط الصور التذكارية</h4>
+                            <p>تخليد أجمل الذكريات مع العروسين</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6: Photo Gallery / Moments (معرض الصور) -->
+            <section class="section-card gallery-card">
+                <h3 class="card-title">
+                    <i class="fa-regular fa-images"></i>
+                    لحظاتنا الجميلة
+                </h3>
+
+                <div class="gallery-slider">
+                    <div class="gallery-slides" id="gallery-track">
+                        <!-- Slide 1 -->
+                        <div class="slide active">
+                            <div class="polaroid-frame">
+                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop" alt="لحظات الزفاف 1" loading="lazy">
+                                <div class="polaroid-caption">معاً نبدأ أجمل حكاية ✨</div>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="slide">
+                            <div class="polaroid-frame">
+                                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop" alt="لحظات الزفاف 2" loading="lazy">
+                                <div class="polaroid-caption">فرحتنا بوجودكم تكتمل 🤍</div>
+                            </div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="slide">
+                            <div class="polaroid-frame">
+                                <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&auto=format&fit=crop" alt="لحظات الزفاف 3" loading="lazy">
+                                <div class="polaroid-caption">كل الحب والسعادة 💍</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Navigation Controls -->
+                    <div class="slider-controls">
+                        <button id="prev-slide" class="slider-arrow" aria-label="الصورة السابقة">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                        <div class="slider-dots" id="slider-dots">
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <button id="next-slide" class="slider-arrow" aria-label="الصورة التالية">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: Venue & Location Map (مكان الحفل) -->
+            <section class="section-card location-card" id="location-section">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-map-pin"></i>
+                    مكان الاستقبال والوصول
+                </h3>
+                <h4 class="venue-name">قاعات لامور - قاعة رويال</h4>
+                <p class="venue-note">يسعدنا ويشرفنا حضوركم، ولتسهيل وصولكم يمكنكم فتح الخريطة بالأسفل</p>
+
+                <!-- Location Action Buttons -->
+                <div class="location-btn-group">
+                    <a href="https://www.google.com/maps/place/Lamour/@29.9919357,31.1282839,17z/data=!3m1!4b1!4m6!3m5!1s0x1458459c0ab8229f:0xab74f2b9de6db025!8m2!3d29.9919311!4d31.1308588!16s%2Fg%2F11cmbkqq92" target="_blank" rel="noopener noreferrer" class="btn-location-primary" id="open-maps-link">
+                        <i class="fa-brands fa-google"></i>
+                        <span>فتح في خرائط Google</span>
+                    </a>
+                    <button id="copy-address-btn" class="btn-location-secondary">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>نسخ رابط الموقع</span>
+                    </button>
+                </div>
+
+                <!-- Styled Map Embed Container -->
+                <div class="map-embed-wrapper">
+                    <iframe 
+                        title="موقع قاعات لامور"
+                        src="https://maps.google.com/maps?q=29.9919311,31.1308588&z=17&output=embed" 
+                        width="100%" 
+                        height="260" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </section>
+
+            <!-- SECTION 8: RSVP Form Linked to Google Sheets (تأكيد الحضور) -->
+            <section class="section-card rsvp-card" id="rsvp-section">
+                <div class="rsvp-header">
+                    <div class="rsvp-badge">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </div>
+                    <h3 class="card-title">تأكيد الحضور</h3>
+                    <p class="rsvp-desc">رجاءً تأكيد حضوركم الكريم لمساعدتنا في ترتيب استقبالكم على أكمل وجه</p>
+                </div>
+
+                <form id="rsvp-form" class="rsvp-form-container">
+                    <!-- Guest Name -->
+                    <div class="form-group">
+                        <label for="guest-name">الاسم الكريم <span class="required">*</span></label>
+                        <div class="input-icon-wrap">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" id="guest-name" name="name" placeholder="اكتب اسمك الكريم هنا" required>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Options -->
+                    <div class="form-group">
+                        <label>هل ستشرفنا بالحضور؟ <span class="required">*</span></label>
+                        <div class="attendance-radio-group">
+                            <label class="radio-pill active" id="pill-attending">
+                                <input type="radio" name="status" value="حاضر" checked>
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>يشرفني الحضور 🤍</span>
+                            </label>
+                            <label class="radio-pill" id="pill-declined">
+                                <input type="radio" name="status" value="معتذر">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                <span>أعتذر بكل ود ✨</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Number of Companions -->
+                    <div class="form-group" id="guests-count-group">
+                        <label for="guests-count">عدد الأفراد (معك)</label>
+                        <div class="input-icon-wrap">
+                            <i class="fa-solid fa-users"></i>
+                            <select id="guests-count" name="guests">
+                                <option value="1">شخص واحد (أنا فقط)</option>
+                                <option value="2">شخصين (٢)</option>
+                                <option value="3">٣ أشخاص</option>
+                                <option value="4">٤ أشخاص أو عائلة</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Congratulations Message -->
+                    <div class="form-group">
+                        <label for="guest-message">كلمة أو تهنئة للعروسين (اختياري)</label>
+                        <div class="input-icon-wrap textarea-wrap">
+                            <i class="fa-regular fa-comment-dots"></i>
+                            <textarea id="guest-message" name="message" rows="3" placeholder="مبارك للعروسين، بارك الله لكما وعليكما..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="rsvp-submit-btn" class="btn-submit-rsvp">
+                        <span class="btn-text">تأكيد الإرسال</span>
+                        <i class="fa-solid fa-paper-plane btn-icon"></i>
+                        <div class="spinner hidden"></div>
+                    </button>
+                </form>
+
+                <!-- Success Message Box -->
+                <div id="rsvp-success-box" class="rsvp-success-box hidden">
+                    <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <h4>تم تسجيل حضورك بنجاح!</h4>
+                    <p id="success-guest-name">شكراً جزيلاً لك، نتطلع لرؤيتكم ومشاركتكم الفرحة 🤍</p>
+                    
+                    <a id="whatsapp-confirm-link" href="#" target="_blank" class="btn-whatsapp-rsvp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span>مشاركة التهنئة أيضاً عبر واتساب</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- SECTION 9: Guestbook & Live Wishes (سجل التهاني) -->
+            <section class="section-card guestbook-card">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-comments"></i>
+                    سجل التهاني والمباركات
+                </h3>
+                <p class="guestbook-sub">رسائل المحبة من الأهل والأصدقاء</p>
+
+                <div id="wishes-list" class="wishes-list">
+                    <!-- Default sample wishes -->
+                    <div class="wish-item">
+                        <div class="wish-author"><i class="fa-solid fa-heart"></i> عائلة العروسين</div>
+                        <p class="wish-text">ألف مبروك لأجمل عروسين، بارك الله لكما وبارك عليكما وجمع بينكما في خير وسعادة دائمة يارب.</p>
+                        <span class="wish-time">رسالة ترحيبية</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="app-footer">
+                <div class="footer-names">محمد & امال</div>
+                <p class="footer-quote">بكم تكتمل فرحتنا ونسعد بحضوركم</p>
+                <div class="footer-bottom-line">
+                    <span>حفل زفاف مبارك © ٢٠٢٦</span>
+                </div>
+            </footer>
+
+        </div>
+
+        <!-- ======================================================= -->
+        <!-- BOTTOM FLOATING NAVIGATION BAR (شريط التنقل السفلي السريع) -->
+        <!-- ======================================================= -->
+        <nav class="bottom-nav-bar" aria-label="التنقل السريع">
+            <a href="#home-section" class="nav-tab active" data-target="home-section">
+                <i class="fa-solid fa-house"></i>
+                <span>الرئيسية</span>
+            </a>
+            <a href="#program-section" class="nav-tab" data-target="program-section">
+                <i class="fa-solid fa-clock"></i>
+                <span>البرنامج</span>
+            </a>
+            <a href="#location-section" class="nav-tab" data-target="location-section">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>الموقع</span>
+            </a>
+            <a href="#rsvp-section" class="nav-tab" data-target="rsvp-section">
+                <i class="fa-solid fa-envelope-open-text"></i>
+                <span>تأكيد الحضور</span>
+            </a>
+            <button id="bottom-audio-btn" class="nav-tab audio-tab" aria-label="كتم أو تشغيل الصوت">
+                <i class="fa-solid fa-volume-high"></i>
+                <span>الصوت</span>
+            </button>
+        </nav>
 
     </main>
 
-    <!-- Custom toast notification -->
-    <div id="toast" class="toast hidden"></div>
+    <!-- Custom Toast Message -->
+    <div id="toast" class="toast-popup hidden"></div>
 
+    <!-- Scripts -->
     <script src="script.js"></script>
 </body>
 </html>

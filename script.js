@@ -1,315 +1,444 @@
+/**
+ * ===================================================================
+ * WEDDING INVITATION INTERACTIVE LOGIC - MOHAMED & AMAL
+ * Includes: Wax Seal Envelope, Countdown, Audio, Google Sheets RSVP,
+ * Gallery Slider, Calendar Export, Falling Particles.
+ * ===================================================================
+ */
+
+// -------------------------------------------------------------
+// 1. إعدادات جوجل شيت (تم الربط بنجاح)
+// -------------------------------------------------------------
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyLgCGsvbnMEnwsADZ1RKEAamvviqFjXpB5MB4DGxsNYpOUg3Mvjp6Xv2wgFwIQ1_zBsw/exec";
+
+// موعد الزفاف: الأربعاء 18 نوفمبر 2026 الساعة 7:00 مساءً
+const WEDDING_DATE = new Date("November 18, 2026 19:00:00").getTime();
+
 document.addEventListener("DOMContentLoaded", () => {
     
-    // Target Date: October 23, 2026 at 8:00 PM
-    const weddingDate = new Date("October 23, 2026 20:00:00").getTime();
-    
-    // Core Elements
-    const welcomeScreen = document.getElementById("welcome-screen");
-    const enterBtn = document.getElementById("enter-btn");
-    const invitationContainer = document.querySelector(".invitation-container");
-    const musicToggle = document.getElementById("music-toggle");
+    // العناصر الرئيسية
+    const envelopeScreen = document.getElementById("envelope-screen");
+    const envelopeBox = document.getElementById("envelope-box");
+    const waxSealBtn = document.getElementById("wax-seal-btn");
+    const mainInvitation = document.getElementById("main-invitation");
     const bgMusic = document.getElementById("bg-music");
+    const musicToggle = document.getElementById("music-toggle");
+    const bottomAudioBtn = document.getElementById("bottom-audio-btn");
     const toast = document.getElementById("toast");
-    
-    // Navigation / Copy Elements
-    const copyLocationBtn = document.getElementById("copy-location-btn");
-    const mapsLink = "https://maps.app.goo.gl/ySKm5qSU7QTNDE767";
 
-    // Welcome Screen Transition & Music Trigger
-    enterBtn.addEventListener("click", () => {
-        // Attempt to play audio
-        bgMusic.volume = 0.4;
-        bgMusic.play().then(() => {
-            musicToggle.classList.add("playing");
-        }).catch(err => {
-            console.log("Audio autoplay prevented or failed:", err);
-        });
-
-        // Smooth animations
-        welcomeScreen.classList.add("fade-out");
+    // -------------------------------------------------------------
+    // 2. تجربة فتح الظرف والختم الشمعي (Wax Seal Opening)
+    // -------------------------------------------------------------
+    waxSealBtn.addEventListener("click", () => {
+        // تأثير اهتزاز الختم
+        waxSealBtn.style.transform = "translate(-50%, -50%) scale(0.9)";
         
         setTimeout(() => {
-            welcomeScreen.classList.add("hidden");
-            invitationContainer.classList.remove("hidden");
-            musicToggle.classList.remove("hidden");
+            // فتح طية الظرف
+            envelopeBox.classList.add("open-flap");
             
-            // Start particle animation after layout is shown
-            startParticles();
-            // Start Countdown
-            startCountdown();
-        }, 1000);
+            // تشغيل الموسيقى تلقائياً
+            playBackgroundMusic();
+
+            // إخفاء شاشة الظرف وإظهار صفحة الدعوة
+            setTimeout(() => {
+                envelopeScreen.classList.add("opened");
+                mainInvitation.classList.remove("hidden");
+                
+                // تشغيل الأنيميشن والعداد التنازلي
+                initParticles();
+                startCountdown();
+                setupActiveNavScroll();
+            }, 700);
+
+        }, 150);
     });
 
-    // Music Play/Pause Toggle
-    musicToggle.addEventListener("click", () => {
+    // -------------------------------------------------------------
+    // 3. التحكم في الموسيقى (تشغيل / إيقاف)
+    // -------------------------------------------------------------
+    function playBackgroundMusic() {
+        bgMusic.volume = 0.5;
+        bgMusic.play().then(() => {
+            musicToggle.classList.remove("paused");
+            updateAudioIcons(true);
+        }).catch(err => {
+            console.log("Audio autoplay restriction:", err);
+            updateAudioIcons(false);
+        });
+    }
+
+    function toggleAudio() {
         if (bgMusic.paused) {
             bgMusic.play();
-            musicToggle.classList.add("playing");
-            showToast("تم تشغيل الموسيقى");
+            musicToggle.classList.remove("paused");
+            updateAudioIcons(true);
+            showToast("تم تشغيل الموسيقى 🎶");
         } else {
             bgMusic.pause();
-            musicToggle.classList.remove("playing");
-            showToast("تم إيقاف الموسيقى مؤقتاً");
+            musicToggle.classList.add("paused");
+            updateAudioIcons(false);
+            showToast("تم كتم الصوت 🔇");
         }
-    });
+    }
 
-    // Countdown Timer logic
+    function updateAudioIcons(isPlaying) {
+        if (isPlaying) {
+            bottomAudioBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i><span>الصوت</span>';
+        } else {
+            bottomAudioBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i><span>كتم</span>';
+        }
+    }
+
+    musicToggle.addEventListener("click", toggleAudio);
+    bottomAudioBtn.addEventListener("click", toggleAudio);
+
+    // -------------------------------------------------------------
+    // 4. العداد التنازلي المباشر (Countdown Timer)
+    // -------------------------------------------------------------
     function startCountdown() {
-        const countdownInterval = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = weddingDate - now;
+        const daysEl = document.getElementById("days");
+        const hoursEl = document.getElementById("hours");
+        const minutesEl = document.getElementById("minutes");
+        const secondsEl = document.getElementById("seconds");
 
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                document.getElementById("countdown-timer").innerHTML = "<div class='wedding-started-msg'>بدأ الحفل بحمد الله! ننتظركم بكل حب</div>";
+        function updateTimer() {
+            const now = new Date().getTime();
+            const diff = WEDDING_DATE - now;
+
+            if (diff <= 0) {
+                document.getElementById("countdown-timer").innerHTML = `
+                    <div style="grid-column: 1 / -1; padding: 15px; font-weight: bold; color: var(--gold-dark); font-size: 1.1rem;">
+                        🎉 اليوم يوم الفرح والسرور! بارك الله للعروسين 🤍
+                    </div>
+                `;
                 return;
             }
 
-            // Calculations for days, hours, minutes and seconds
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            // Output the results
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
-        }, 1000);
+            daysEl.textContent = days < 10 ? "0" + days : days;
+            hoursEl.textContent = hours < 10 ? "0" + hours : hours;
+            minutesEl.textContent = minutes < 10 ? "0" + minutes : minutes;
+            secondsEl.textContent = seconds < 10 ? "0" + seconds : seconds;
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
     }
 
+    // -------------------------------------------------------------
+    // 5. زر حفظ التاريخ في تقويم الهاتف (Google Calendar & iCal)
+    // -------------------------------------------------------------
+    const addToCalendarBtn = document.getElementById("add-to-calendar-btn");
+    addToCalendarBtn.addEventListener("click", () => {
+        // رابط إضافة الحدث مباشرة لـ Google Calendar
+        const title = encodeURIComponent("حفل زفاف محمد & امال 💍");
+        const details = encodeURIComponent("بفضل من الله ورعايته يسرنا دعوتكم لمشاركتنا فرحتنا في عقد قراننا وزفافنا بقاعات لامور (قاعة رويال).");
+        const location = encodeURIComponent("قاعات لامور - قاعة رويال");
+        // التوقيت: 18 نوفمبر 2026 من 7 م إلى 11 م (UTC+2 / UTC+3)
+        const dates = "20261118T170000Z/20261118T210000Z";
 
+        const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+        window.open(googleCalUrl, "_blank");
+        showToast("جاري فتح التقويم لإضافة المناسبة 📅");
+    });
 
-    // Copy Location Link to Clipboard
-    copyLocationBtn.addEventListener("click", () => {
-        navigator.clipboard.writeText(mapsLink).then(() => {
-            showToast("تم نسخ رابط موقع القاعة بنجاح!");
-        }).catch(err => {
-            console.error("Could not copy link: ", err);
-            showToast("حدث خطأ أثناء نسخ الرابط");
+    // -------------------------------------------------------------
+    // 6. نسخ عنوان القاعة
+    // -------------------------------------------------------------
+    const copyAddressBtn = document.getElementById("copy-address-btn");
+    const mapsExactUrl = "https://www.google.com/maps/place/Lamour/@29.9919357,31.1282839,17z/data=!3m1!4b1!4m6!3m5!1s0x1458459c0ab8229f:0xab74f2b9de6db025!8m2!3d29.9919311!4d31.1308588!16s%2Fg%2F11cmbkqq92";
+    
+    copyAddressBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(mapsExactUrl).then(() => {
+            showToast("تم نسخ رابط موقع القاعة بنجاح! 📋");
+        }).catch(() => {
+            showToast("قاعات لامور (قاعة رويال)");
         });
     });
 
+    // -------------------------------------------------------------
+    // 7. معرض الصور التفاعلي (Gallery Slider & Touch Swipe)
+    // -------------------------------------------------------------
+    const track = document.getElementById("gallery-track");
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".slider-dots .dot");
+    const prevBtn = document.getElementById("prev-slide");
+    const nextBtn = document.getElementById("next-slide");
+    let currentSlide = 0;
 
-
-    // Helper: Show custom toast message
-    function showToast(message) {
-        toast.innerText = message;
-        toast.classList.remove("hidden");
-        toast.classList.add("show");
+    function goToSlide(index) {
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+        currentSlide = index;
+        track.style.transform = `translateX(${currentSlide * 100}%)`;
         
-        setTimeout(() => {
-            toast.classList.remove("show");
-            setTimeout(() => {
-                toast.classList.add("hidden");
-            }, 300);
-        }, 3000);
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === currentSlide);
+        });
     }
 
-    // Dynamic synthesized pop/sparkle sound effect using Web Audio API
-    function playPopSound() {
-        try {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContext) return;
-            const ctx = new AudioContext();
-            
-            // Dual oscillator chime (magical, high-end sparkle)
-            const osc1 = ctx.createOscillator();
-            const osc2 = ctx.createOscillator();
-            const gainNode = ctx.createGain();
-            
-            osc1.type = "sine";
-            osc1.frequency.setValueAtTime(800, ctx.currentTime);
-            osc1.frequency.exponentialRampToValueAtTime(1600, ctx.currentTime + 0.15);
-            
-            osc2.type = "triangle";
-            osc2.frequency.setValueAtTime(1000, ctx.currentTime);
-            osc2.frequency.exponentialRampToValueAtTime(2000, ctx.currentTime + 0.15);
-            
-            gainNode.gain.setValueAtTime(0.08, ctx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-            
-            osc1.connect(gainNode);
-            osc2.connect(gainNode);
-            gainNode.connect(ctx.destination);
-            
-            osc1.start();
-            osc2.start();
-            osc1.stop(ctx.currentTime + 0.15);
-            osc2.stop(ctx.currentTime + 0.15);
-        } catch (e) {
-            // Silently fallback if audio context blocked or unsupported
+    prevBtn.addEventListener("click", () => goToSlide(currentSlide - 1));
+    nextBtn.addEventListener("click", () => goToSlide(currentSlide + 1));
+    dots.forEach((dot, i) => dot.addEventListener("click", () => goToSlide(i)));
+
+    // دعم السحب باللمس على الموبايل (Touch Swipe)
+    let startX = 0;
+    track.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    track.addEventListener("touchend", (e) => {
+        const diffX = startX - e.changedTouches[0].clientX;
+        if (diffX > 40) {
+            goToSlide(currentSlide + 1); // سحب لليسار
+        } else if (diffX < -40) {
+            goToSlide(currentSlide - 1); // سحب لليمين
         }
-    }
+    }, { passive: true });
 
-    // Particles/Falling Hearts effect generator
-    function startParticles() {
-        const container = document.getElementById("particles-container");
-        const particleCount = 20;
+    // -------------------------------------------------------------
+    // 8. نموذج تأكيد الحضور وربطه مع Google Sheets (RSVP)
+    // -------------------------------------------------------------
+    const rsvpForm = document.getElementById("rsvp-form");
+    const pillAttending = document.getElementById("pill-attending");
+    const pillDeclined = document.getElementById("pill-declined");
+    const guestsCountGroup = document.getElementById("guests-count-group");
+    const rsvpSubmitBtn = document.getElementById("rsvp-submit-btn");
+    const rsvpSuccessBox = document.getElementById("rsvp-success-box");
+    const successGuestName = document.getElementById("success-guest-name");
+    const whatsappConfirmLink = document.getElementById("whatsapp-confirm-link");
+    const wishesList = document.getElementById("wishes-list");
 
-        for (let i = 0; i < particleCount; i++) {
-            createPetal(container);
+    // تبديل أزرار الحضور / الاعتذار
+    pillAttending.addEventListener("click", () => {
+        pillAttending.classList.add("active");
+        pillDeclined.classList.remove("active");
+        pillAttending.querySelector("input").checked = true;
+        guestsCountGroup.style.display = "flex";
+    });
+
+    pillDeclined.addEventListener("click", () => {
+        pillDeclined.classList.add("active");
+        pillAttending.classList.remove("active");
+        pillDeclined.querySelector("input").checked = true;
+        guestsCountGroup.style.display = "none";
+    });
+
+    // إرسال البيانات
+    rsvpForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("guest-name").value.trim();
+        const status = document.querySelector('input[name="status"]:checked').value;
+        const guests = status === "حاضر" ? document.getElementById("guests-count").value : "0";
+        const message = document.getElementById("guest-message").value.trim();
+
+        if (!name) {
+            showToast("يرجى كتابة الاسم الكريم أولاً");
+            return;
         }
 
-        // Periodically spawn a new petal to keep it active
-        setInterval(() => {
-            if (document.querySelectorAll(".petal-particle").length < 35) {
-                createPetal(container);
-            }
-        }, 800); // Spawn slightly faster for rich atmosphere
-    }
+        // تشغيل مؤشر التحميل
+        const btnText = rsvpSubmitBtn.querySelector(".btn-text");
+        const btnIcon = rsvpSubmitBtn.querySelector(".btn-icon");
+        const spinner = rsvpSubmitBtn.querySelector(".spinner");
 
-    function createPetal(container) {
-        const petal = document.createElement("div");
-        petal.classList.add("petal-particle");
-        
-        // Random styling properties
-        const left = Math.random() * 100;
-        const size = Math.random() * 12 + 16; // 16px to 28px
-        const delay = Math.random() * 5;
-        const duration = Math.random() * 8 + 7; // 7s to 15s (slower, more elegant fall)
-        const rotation = Math.random() * 360;
-        
-        // Rose tint varieties (pinks, soft corals, blush rose, magenta, rose-gold, and elegant warm gold)
-        const tints = [
-            "#ff7597", // Soft pink
-            "#ff4b72", // Rose pink
-            "#e8436a", // Deep rose
-            "#f9a8b9", // Pale blush
-            "#ffb3c1", // Coral pink
-            "#ff8da1", // Cotton candy pink
-            "#ff2e63", // Radiant rose
-            "#b76e79", // Rose gold
-            "#d4af37"  // Warm gold accent
-        ];
-        const randomTint = tints[Math.floor(Math.random() * tints.length)];
-        
-        petal.style.left = `${left}%`;
-        petal.style.width = `${size}px`;
-        petal.style.height = `${size}px`;
-        petal.style.animationDelay = `${delay}s`;
-        petal.style.animationDuration = `${duration}s`;
-        
-        // Assign a random 3D swaying animation
-        const animations = ["fallingSway1", "fallingSway2", "fallingSway3"];
-        const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-        petal.style.animationName = randomAnimation;
-        
-        // Shapes library: heart, organic rose petal, hollow/contour heart, double heart
-        const shapes = [
-            // 1. Classic Heart
-            `<svg viewBox="0 0 24 24" fill="${randomTint}" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>`,
-            // 2. Organic Rose Petal
-            `<svg viewBox="0 0 24 24" fill="${randomTint}" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C16.5 2 20 6.5 20 12C20 16 16.5 20 12 20.5C7.5 20 4 16 4 12C4 6.5 7.5 2 12 2Z"/>
-            </svg>`,
-            // 3. Hollow Heart Contour
-            `<svg viewBox="0 0 24 24" fill="none" stroke="${randomTint}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>`,
-            // 4. Double Romantic Hearts
-            `<svg viewBox="0 0 24 24" fill="${randomTint}" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" opacity="0.85"/>
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#d4af37" opacity="0.9" transform="scale(0.65) translate(14, 5)"/>
-            </svg>`
-        ];
-        
-        petal.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
-        
-        // Click / Touch pop effect trigger
-        const triggerPop = (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            popHeart(petal, randomTint);
+        btnText.textContent = "جاري الحفظ...";
+        btnIcon.classList.add("hidden");
+        spinner.classList.remove("hidden");
+        rsvpSubmitBtn.disabled = true;
+
+        const payload = {
+            name: name,
+            status: status,
+            guests: guests,
+            message: message
         };
-        
-        petal.addEventListener("mousedown", triggerPop);
-        petal.addEventListener("touchstart", triggerPop, { passive: false });
-        
-        container.appendChild(petal);
 
-        // Remove petal after animation completes to avoid memory leak
-        setTimeout(() => {
-            petal.remove();
-        }, (duration + delay) * 1000);
-    }
+        // إرسال البيانات إلى Google Sheets
+        if (GOOGLE_SHEET_URL && GOOGLE_SHEET_URL.trim() !== "") {
+            try {
+                const formData = new URLSearchParams();
+                formData.append("name", name);
+                formData.append("status", status);
+                formData.append("guests", guests);
+                formData.append("message", message);
 
-    // Explode/Pop Action
-    function popHeart(petal, color) {
-        // Position coordinates of click
-        const rect = petal.getBoundingClientRect();
-        const x = rect.left + rect.width / 2;
-        const y = rect.top + rect.height / 2;
-
-        // Spark explosion
-        createExplosion(x, y, color);
-        
-        // Play cute chime sound
-        playPopSound();
-        
-        // Remove element
-        petal.remove();
-    }
-
-    // Generate popping sparks
-    function createExplosion(x, y, baseColor) {
-        const particleCount = 18; // rich burst
-        
-        // Curated multicolor palette matching the wedding and roses theme
-        const explosionColors = [
-            baseColor,
-            "#ffffff", // Shimmering white
-            "#d4af37", // Warm shiny gold
-            "#ffb3c1", // Blush pink
-            "#ff7597"  // Cotton candy pink
-        ];
-        
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement("div");
-            particle.classList.add("explosion-particle");
-            
-            const randomColor = explosionColors[Math.floor(Math.random() * explosionColors.length)];
-            
-            // Randomly use a heart-shaped burst particle or a round spark
-            if (Math.random() < 0.45) {
-                particle.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="${randomColor}" style="width: 100%; height: 100%; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.12));">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                `;
-            } else {
-                particle.style.backgroundColor = randomColor;
-                particle.style.borderRadius = "50%";
-                particle.style.boxShadow = `0 0 6px ${randomColor}`;
+                await fetch(GOOGLE_SHEET_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: formData.toString()
+                });
+            } catch (err) {
+                console.warn("Google sheet post error (will continue gracefully):", err);
             }
-            
-            particle.style.left = `${x}px`;
-            particle.style.top = `${y}px`;
-            
-            // Random angle and push distance
-            const angle = Math.random() * Math.PI * 2;
-            const distance = Math.random() * 110 + 45; // 45px to 155px travel radius
-            const tx = Math.cos(angle) * distance;
-            const ty = Math.sin(angle) * distance;
-            
-            particle.style.setProperty("--tx", `${tx}px`);
-            particle.style.setProperty("--ty", `${ty}px`);
-            
-            // Random scaling
-            const size = Math.random() * 8 + 6; // 6px to 14px
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            
-            document.body.appendChild(particle);
-            
-            // Garbage collection
-            setTimeout(() => {
-                particle.remove();
-            }, 700);
         }
+
+        // حفظ محلي في المتصفح وعرض التهنئة مباشرة في سجل التهاني
+        if (message) {
+            addWishToFeed(name, message);
+        }
+
+        // تجهيز رابط الواتساب البديل
+        const waText = encodeURIComponent(
+            `السلام عليكم ورحمة الله،\n` +
+            `تم تأكيد دعوة زفاف محمد & امال 💍\n` +
+            `الاسم: ${name}\n` +
+            `الحالة: ${status === "حاضر" ? "أتشرف بالحضور 🤍" : "معتذر بكل ود ✨"}\n` +
+            (status === "حاضر" ? `عدد الأفراد: ${guests}\n` : "") +
+            (message ? `التهنئة: ${message}` : "")
+        );
+        whatsappConfirmLink.href = `https://wa.me/?text=${waText}`;
+
+        // إظهار رسالة النجاح
+        setTimeout(() => {
+            rsvpForm.classList.add("hidden");
+            rsvpSuccessBox.classList.remove("hidden");
+            successGuestName.textContent = `أهلاً بك يا ${name}، شكراً لتأكيدك ونسعد بك دائماً 🤍`;
+            showToast("تم تأكيد حضورك بنجاح! شكراً لك 🎉");
+        }, 600);
+    });
+
+    function addWishToFeed(author, text) {
+        const item = document.createElement("div");
+        item.className = "wish-item";
+        item.innerHTML = `
+            <div class="wish-author"><i class="fa-solid fa-heart"></i> ${escapeHtml(author)}</div>
+            <p class="wish-text">${escapeHtml(text)}</p>
+            <span class="wish-time">الآن</span>
+        `;
+        wishesList.prepend(item);
+    }
+
+    function escapeHtml(string) {
+        const div = document.createElement("div");
+        div.innerText = string;
+        return div.innerHTML;
+    }
+
+    // -------------------------------------------------------------
+    // 9. شريط التنقل السفلي السريع مع تحديث التبويب النشط
+    // -------------------------------------------------------------
+    const navTabs = document.querySelectorAll(".bottom-nav-bar .nav-tab:not(.audio-tab)");
+    
+    function setupActiveNavScroll() {
+        const sections = [
+            document.getElementById("home-section"),
+            document.getElementById("program-section"),
+            document.getElementById("location-section"),
+            document.getElementById("rsvp-section")
+        ];
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach(sec => {
+                if (sec) {
+                    const top = sec.offsetTop - 120;
+                    if (window.scrollY >= top) {
+                        current = sec.getAttribute("id");
+                    }
+                }
+            });
+
+            navTabs.forEach(tab => {
+                tab.classList.toggle("active", tab.getAttribute("data-target") === current);
+            });
+        }, { passive: true });
+    }
+
+    // -------------------------------------------------------------
+    // 10. تساقط أوراق الزيتون والبتلات الذهبية (Canvas Particles)
+    // -------------------------------------------------------------
+    function initParticles() {
+        const canvas = document.getElementById("particles-canvas");
+        const ctx = canvas.getContext("2d");
+        
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener("resize", () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const particles = [];
+        const count = 28; // عدد خفيف لضمان سلاسة وسرعة الأداء
+
+        for (let i = 0; i < count; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height - height,
+                size: Math.random() * 8 + 6,
+                speedY: Math.random() * 1.2 + 0.6,
+                speedX: Math.random() * 0.8 - 0.4,
+                angle: Math.random() * 360,
+                spin: Math.random() * 2 - 1,
+                type: Math.random() > 0.4 ? "leaf" : "gold",
+                opacity: Math.random() * 0.6 + 0.3
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.y += p.speedY;
+                p.x += Math.sin(p.y / 30) * 0.8 + p.speedX;
+                p.angle += p.spin;
+
+                if (p.y > height + 20) {
+                    p.y = -20;
+                    p.x = Math.random() * width;
+                }
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.angle * Math.PI) / 180);
+                ctx.globalAlpha = p.opacity;
+
+                if (p.type === "leaf") {
+                    // رسم ورقة زيتون مائية ناعمة
+                    ctx.fillStyle = "#637a5f";
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, p.size, p.size * 0.4, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    // لمسة ذهبية لامعة
+                    ctx.fillStyle = "#dfbe7a";
+                    ctx.beginPath();
+                    ctx.arc(0, 0, p.size * 0.25, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    }
+
+    // -------------------------------------------------------------
+    // 11. رسالة التنبيه السريعة (Toast Notification)
+    // -------------------------------------------------------------
+    let toastTimeout;
+    function showToast(msg) {
+        clearTimeout(toastTimeout);
+        toast.textContent = msg;
+        toast.classList.remove("hidden");
+
+        toastTimeout = setTimeout(() => {
+            toast.classList.add("hidden");
+        }, 2800);
     }
 
 });
